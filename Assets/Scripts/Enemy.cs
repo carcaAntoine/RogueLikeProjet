@@ -8,6 +8,8 @@ namespace MyGame
     {
 
         public int playerDamage;
+        public AudioClip attackSound1;	
+		public AudioClip attackSound2;
         private Animator animator;
         private Transform target; //position player
         private bool skipMove;
@@ -55,6 +57,7 @@ namespace MyGame
             Player hitPlayer = component as Player;
             hitPlayer.LoseFood(playerDamage);
             animator.SetTrigger("enemyAttack");
+            SoundManager.instance.RandomizeSfx (attackSound1, attackSound2);
         }
     }
 }

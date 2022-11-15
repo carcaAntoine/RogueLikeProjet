@@ -17,6 +17,13 @@ namespace MyGame
         private Animator animator;
         private int food;
         public Text foodText;
+        public AudioClip moveSound1;                //when player moves.
+        public AudioClip moveSound2;                //when player moves.
+        public AudioClip eatSound1;                 //when player collects a food object.
+        public AudioClip eatSound2;                 //when player collects a food object.
+        public AudioClip drinkSound1;               //when player collects a soda object.
+        public AudioClip drinkSound2;               //when player collects a soda object.
+        public AudioClip gameOverSound;				//when player dies.
 
         protected override void Start()
         {
@@ -63,6 +70,7 @@ namespace MyGame
             if (Move(xDir, yDir, out hit))
             {
                 //Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
+                SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
             }
             checkIfGameOver();
             GameManager.instance.playersTurn = false;
@@ -81,12 +89,14 @@ namespace MyGame
             {
                 food += pointsPerFood;
                 foodText.text = "+ " + pointsPerFood + " Food";
+                SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
                 other.gameObject.SetActive(false);
             }
             else if (other.tag == "Soda")
             {
                 food += pointsPerSoda;
                 foodText.text = "+ " + pointsPerSoda + " Food";
+                SoundManager.instance.RandomizeSfx (drinkSound1, drinkSound2);
                 other.gameObject.SetActive(false);
             }
         }
@@ -101,8 +111,9 @@ namespace MyGame
 
         private void Restart()
         {
-            Application.LoadLevel(Application.loadedLevel);
+            //Application.LoadLevel(Application.loadedLevel);
             //SceneManager.LoadScene(0);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
         }
 
         public void LoseFood(int loss)
@@ -117,6 +128,8 @@ namespace MyGame
         {
             if (food <= 0)
             {
+                SoundManager.instance.PlaySingle (gameOverSound);
+                SoundManager.instance.musicSource.Stop();
                 GameManager.instance.GameOver();
             }
         }
