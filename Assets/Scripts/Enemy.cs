@@ -2,56 +2,59 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MovingObject
+namespace MyGame
 {
-
-    public int playerDamage;
-    private Animator animator;
-    private Transform target; //position player
-    private bool skipMove;
-
-    
-    protected override void Start()
+    public class Enemy : MovingObject
     {
-        GameManager.instance.AddEnemyToList(this);
-        animator = GetComponent<Animator>();
-        target = GameObject.FindGameObjectWithTag ("Player").transform; 
-        base.Start();
-    }
 
-    protected override void AttemptMove<T>(int xDir, int yDir)
-    {
-        if(skipMove)
+        public int playerDamage;
+        private Animator animator;
+        private Transform target; //position player
+        private bool skipMove;
+
+
+        protected override void Start()
         {
-            skipMove = false;
-            return;
+            GameManager.instance.AddEnemyToList(this);
+            animator = GetComponent<Animator>();
+            target = GameObject.FindGameObjectWithTag("Player").transform;
+            base.Start();
         }
 
-        base.AttemptMove<T>(xDir, yDir);
-        skipMove = true;
-    }
-
-    public void MoveEnemy()
-    {
-        int xDir = 0;
-        int yDir = 0;
-
-        if(Mathf.Abs (target.position.x - transform.position.x) < float.Epsilon) //est-ce que enemy et player sont dans la même colonne
+        protected override void AttemptMove<T>(int xDir, int yDir)
         {
-            yDir = target.position.y > transform.position.y ? 1 : -1; //Move up, else move down
-        }
-        else
-        {
-            xDir = target.position.x > transform.position.x ? 1 : -1;
+            if (skipMove)
+            {
+                skipMove = false;
+                return;
+            }
+
+            base.AttemptMove<T>(xDir, yDir);
+            skipMove = true;
         }
 
-        AttemptMove<Player> (xDir, yDir);
-    }
+        public void MoveEnemy()
+        {
+            int xDir = 0;
+            int yDir = 0;
 
-    protected override void OnCantMove<T>(T component)
-    {
-        Player hitPlayer = component as Player;
-        hitPlayer.LoseFood(playerDamage);
-        animator.SetTrigger("enemyAttack");
+            if (Mathf.Abs(target.position.x - transform.position.x) < float.Epsilon) //est-ce que enemy et player sont dans la même colonne
+            {
+                yDir = target.position.y > transform.position.y ? 1 : -1; //Move up, else move down
+            }
+            else
+            {
+                xDir = target.position.x > transform.position.x ? 1 : -1;
+            }
+
+            AttemptMove<Player>(xDir, yDir);
+        }
+
+        protected override void OnCantMove<T>(T component)
+        {
+            Player hitPlayer = component as Player;
+            hitPlayer.LoseFood(playerDamage);
+            animator.SetTrigger("enemyAttack");
+        }
     }
 }

@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Loader : MonoBehaviour
+namespace MyGame
 {
-    public GameObject gameManager;
-    void Awake()
+    public class Loader : MonoBehaviour
     {
-        if(GameManager.instance == null)
-            Instantiate(gameManager);
-    }
+        public GameObject gameManager;
+        void Awake()
+        {
+            if (GameManager.instance == null)
+                Instantiate(gameManager);
+        }
 
+    }
 }

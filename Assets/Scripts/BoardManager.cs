@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-/*namespace Completed
-{*/
+namespace MyGame
+{
     public class BoardManager : MonoBehaviour
     {
         [Serializable]
@@ -99,4 +99,4 @@ using Random = UnityEngine.Random;
             Instantiate(exit, new Vector3(columns - 1, rows - 1, 0f), Quaternion.identity);
         }
     }
-//}
+}
