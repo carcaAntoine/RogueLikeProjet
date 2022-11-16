@@ -104,7 +104,7 @@ namespace MyGame
 			yield return new WaitForSeconds(turnDelay);
 			if (enemies.Count == 0) 
 			{
-				yield return new WaitForSeconds(turnDelay);
+				yield return new WaitForSeconds(turnDelay); //attend un certain temps (ici turnDelay)
 			}
 			
 			for (int i = 0; i < enemies.Count; i++)
